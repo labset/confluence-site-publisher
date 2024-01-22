@@ -1,9 +1,8 @@
 {
-  "name": "@monorepo/root",
+  "name": "@labset/confsite",
   "version": "1.0.0",
-  "description": "typescript monorepo template",
-  "main": "index.js",
-  "repository": "git@github.com:labset/typescript-monorepo.git",
+  "description": "confluence site publisher",
+  "repository": "git@github.com:labset/confluence-site-publisher.git",
   "author": "Hasnae R. <viqueen>",
   "license": "Apache-2.0",
   "private": true,

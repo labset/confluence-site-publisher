@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const prefix = (name: string): string => {
-    return `prefix_${name}`;
-};
+import { Command } from 'commander';
 
-export { prefix };
+const program = new Command();
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+program.version(require('../package.json').version);
+program.parse(process.argv);

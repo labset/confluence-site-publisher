@@ -1,7 +1,10 @@
 {
-  "name": "@monorepo/backend",
+  "name": "@labset/confsite-cli",
   "version": "1.0.0",
   "license": "Apache-2.0",
+  "bin": {
+    "confsite": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -9,5 +12,7 @@
     "format": "prettier --check --write .",
     "lint": "eslint src/ --ext .ts,.tsx,.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "commander": "^11.1.0"
+  }
 }

@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-yarn format:check
-yarn lint
+yarn format:check && yarn lint

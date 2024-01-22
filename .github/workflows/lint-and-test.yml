@@ -1,4 +1,4 @@
-name: typescript-monorepo lint-and-test
+name: confluence-site-publisher lint-and-test
 on:
   push:
     branches:
