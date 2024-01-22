@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "es6"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "paths": {
+      "@monorepo/*": ["modules/*"]
+    },
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2017"
+  },
+  "include": ["modules/"],
+  "exclude": [
+    "modules/**/*.test.ts",
+    "modules/**/*.spec.ts",
+    "modules/**/*.test.tsx",
+    "modules/**/*.spec.tsx",
+    "modules/**/*.snap"
+  ]
+}

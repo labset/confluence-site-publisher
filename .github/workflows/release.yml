@@ -1,0 +1,53 @@
+name: "labset-platform Publish"
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          registry-url: https://registry.npmjs.org/
+      - run: yarn
+      - run: yarn workspaces run build
+      - run: yarn lint
+      - run: yarn format:check
+      - run: yarn test
+
+  release-backend:
+    needs: lint-and-test
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          registry-url: https://registry.npmjs.org/
+      - run: yarn
+      - run: yarn workspace @monorepo/backend build
+      - run: yarn workspace @monorepo/backend publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  release-frontend:
+    needs: lint-and-test
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          registry-url: https://registry.npmjs.org/
+      - run: yarn
+      - run: yarn workspace @monorepo/frontend build
+      - run: yarn workspace @monorepo/frontend publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

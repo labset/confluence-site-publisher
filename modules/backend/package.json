@@ -1,0 +1,13 @@
+{
+  "name": "@monorepo/backend",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "format:check": "prettier --check .",
+    "format": "prettier --check --write .",
+    "lint": "eslint src/ --ext .ts,.tsx,.js"
+  },
+  "dependencies": {}
+}
