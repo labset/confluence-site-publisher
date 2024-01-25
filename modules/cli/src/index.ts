@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as path from 'path';
+
 import { Command } from 'commander';
 
 import { extractSpace } from './commands/extract';
+import { initStore } from './store';
 
 const program = new Command();
 
@@ -23,7 +26,9 @@ program
     .command(`extract <spaceKey>`)
     .description(`extract all content and media from a confluence space`)
     .action(async (spaceKey: string) => {
-        await extractSpace({ spaceKey });
+        const destination = path.resolve(process.cwd(), 'output');
+        const store = initStore({ spaceKey, destination });
+        await extractSpace({ spaceKey, store });
     });
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

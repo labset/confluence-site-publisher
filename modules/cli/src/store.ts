@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { confluenceApi } from '../../confluence-api';
-import { Store } from '../../store';
+import * as path from 'path';
 
-import { extractPageTree } from './extract-page-tree';
-
-interface ExtractSpaceProps {
-    spaceKey: string;
-    store: Store;
+interface Store {
+    pages: string;
+    blogs: string;
 }
 
-const extractSpace = async ({ spaceKey, store }: ExtractSpaceProps) => {
-    console.info(`🪐 extract-space:`, spaceKey);
-    const homepageIdentifier =
-        await confluenceApi.getSpaceHomepageIdentifier(spaceKey);
-    await extractPageTree({ identifier: homepageIdentifier, store });
+const initStore = ({
+    spaceKey,
+    destination
+}: {
+    spaceKey: string;
+    destination: string;
+}): Store => {
+    const output = path.resolve(destination, 'site', spaceKey);
+    return {
+        pages: path.resolve(output, 'notes'),
+        blogs: path.resolve(output, 'articles')
+    };
 };
 
-export { extractSpace };
+export { initStore };
+export type { Store };

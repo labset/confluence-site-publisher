@@ -15,16 +15,20 @@
  */
 import { confluenceApi } from '../../confluence-api';
 import { Identifier } from '../../confluence-api/types';
+import { Store } from '../../store';
+
+import { extractContent } from './extract-content';
 
 interface ExtractPageTreeProps {
     identifier: Identifier;
+    store: Store;
 }
 
-const extractPageTree = async ({ identifier }: ExtractPageTreeProps) => {
+const extractPageTree = async ({ identifier, store }: ExtractPageTreeProps) => {
     const content = await confluenceApi.getContentById(identifier.id);
-    console.info(`📝 process content:`, content.identifier);
+    await extractContent({ content, store });
     for (const child of content.children) {
-        await extractPageTree({ identifier: child });
+        await extractPageTree({ identifier: child, store });
     }
 };
 

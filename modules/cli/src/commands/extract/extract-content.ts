@@ -13,12 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as fs from 'fs';
+import * as path from 'path';
+
 import { Content } from '../../confluence-api/types';
+import { Store } from '../../store';
 
 interface ExtractContentProps {
     content: Content;
+    store: Store;
 }
 
-const extractContent = async (_: ExtractContentProps) => {};
+const resolveContentPath = ({ content, store }: ExtractContentProps) => {
+    const root = content.type === 'page' ? store.pages : store.blogs;
+    const target = path.resolve(root, content.identifier.id);
+    fs.mkdirSync(target, { recursive: true });
+    return target;
+};
+
+const extractContent = async ({ content, store }: ExtractContentProps) => {
+    console.info(`📝 process content:`, content.identifier);
+    const contentPath = resolveContentPath({ content, store });
+    fs.writeFileSync(
+        path.resolve(contentPath, 'data.json'),
+        JSON.stringify(content)
+    );
+};
 
 export { extractContent };
