@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Command } from 'commander';
+import { confluenceApi } from '../../confluence-api';
 
-import { extractSpace } from './commands/extract';
+import { extractPageTree } from './extract-page-tree';
 
-const program = new Command();
+interface ExtractSpaceProps {
+    spaceKey: string;
+}
 
-program
-    .command(`extract <spaceKey>`)
-    .description(`extract all content and media from a confluence space`)
-    .action(async (spaceKey: string) => {
-        await extractSpace({ spaceKey });
-    });
+const extractSpace = async ({ spaceKey }: ExtractSpaceProps) => {
+    console.info(`🪐 extract-space:`, spaceKey);
+    const homepageIdentifier =
+        await confluenceApi.getSpaceHomepageIdentifier(spaceKey);
+    await extractPageTree({ identifier: homepageIdentifier });
+};
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-program.version(require('../package.json').version);
-program.parse(process.argv);
+export { extractSpace };

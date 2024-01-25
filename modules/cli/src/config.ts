@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Command } from 'commander';
+import dotenv from 'dotenv';
 
-import { extractSpace } from './commands/extract';
+interface Config {
+    CONFLUENCE_SITE_NAME: string;
+    CONFLUENCE_USERNAME: string;
+    CONFLUENCE_API_TOKEN: string;
+}
 
-const program = new Command();
+const parsedConfig: unknown = dotenv.config().parsed ?? {};
+const config = parsedConfig as Config;
 
-program
-    .command(`extract <spaceKey>`)
-    .description(`extract all content and media from a confluence space`)
-    .action(async (spaceKey: string) => {
-        await extractSpace({ spaceKey });
-    });
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-program.version(require('../package.json').version);
-program.parse(process.argv);
+export { config };
+export type { Config };
