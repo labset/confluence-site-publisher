@@ -18,6 +18,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React, { useMemo } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 
+import { SiteContent } from "../components/site-content";
 import { SiteLayout } from "../components/site-layout";
 import { TopNavigationProps } from "../components/site-layout/top-navigation";
 
@@ -37,7 +38,9 @@ const Site = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SiteLayout topNav={topNav}>hello world</SiteLayout>
+      <SiteLayout topNav={topNav}>
+        <SiteContent />
+      </SiteLayout>
     </ThemeProvider>
   );
 };

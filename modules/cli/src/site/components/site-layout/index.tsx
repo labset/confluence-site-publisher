@@ -31,7 +31,7 @@ const SiteLayout = ({
       <TopNavigation Logo={topNav.Logo} brand={topNav.brand} />
       <Box component="main" sx={{ flexGrow: 2, p: 3 }}>
         <Toolbar />
-        <Container maxWidth="xl">{children}</Container>
+        <Container maxWidth="lg">{children}</Container>
       </Box>
     </Box>
   );
