@@ -16,28 +16,63 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import ReactDOMServer from 'react-dom/server';
+
 import { Content } from '../../confluence-api/types';
+import { StaticWrapper } from '../../site/static-wrapper';
 import { Store } from '../../store';
 
 interface ExtractContentProps {
     content: Content;
     store: Store;
+    asHomePage: boolean;
 }
 
-const resolveContentPath = ({ content, store }: ExtractContentProps) => {
-    const root = content.type === 'page' ? store.pages : store.blogs;
-    const target = path.resolve(root, content.identifier.id);
-    fs.mkdirSync(target, { recursive: true });
-    return target;
+const resolveContentPath = ({
+    content,
+    store,
+    asHomePage
+}: ExtractContentProps) => {
+    if (asHomePage) {
+        return store.site.home;
+    }
+    const root = content.type === 'page' ? store.site.pages : store.site.blogs;
+    return path.resolve(root, content.identifier.id);
 };
 
-const extractContent = async ({ content, store }: ExtractContentProps) => {
+const saveContentHtml = async ({
+    content,
+    store,
+    asHomePage
+}: ExtractContentProps) => {
+    const indexHtml = ReactDOMServer.renderToStaticMarkup(
+        StaticWrapper({ content })
+    );
+    const target = content.type === 'page' ? 'notes' : 'articles';
+    const templatePath = asHomePage
+        ? store.templates
+        : path.resolve(store.templates, target, content.identifier.id);
+    fs.mkdirSync(templatePath, { recursive: true });
+    fs.writeFileSync(
+        path.resolve(templatePath, 'index.html'),
+        `<!DOCTYPE html>\n${indexHtml}`
+    );
+};
+
+const extractContent = async ({
+    content,
+    store,
+    asHomePage
+}: ExtractContentProps) => {
     console.info(`📝 process content:`, content.identifier);
-    const contentPath = resolveContentPath({ content, store });
+    const contentPath = resolveContentPath({ content, store, asHomePage });
+    fs.mkdirSync(contentPath, { recursive: true });
     fs.writeFileSync(
         path.resolve(contentPath, 'data.json'),
         JSON.stringify(content)
     );
+
+    await saveContentHtml({ content, store, asHomePage });
 };
 
 export { extractContent };

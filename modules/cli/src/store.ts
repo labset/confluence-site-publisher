@@ -16,8 +16,12 @@
 import * as path from 'path';
 
 interface Store {
-    pages: string;
-    blogs: string;
+    site: {
+        home: string;
+        pages: string;
+        blogs: string;
+    };
+    templates: string;
 }
 
 const initStore = ({
@@ -27,10 +31,15 @@ const initStore = ({
     spaceKey: string;
     destination: string;
 }): Store => {
-    const output = path.resolve(destination, 'site', spaceKey);
+    const siteOutput = path.resolve(destination, 'site', spaceKey);
+    const templatesOutput = path.resolve(destination, 'templates', spaceKey);
     return {
-        pages: path.resolve(output, 'notes'),
-        blogs: path.resolve(output, 'articles')
+        site: {
+            home: siteOutput,
+            pages: path.resolve(siteOutput, 'notes'),
+            blogs: path.resolve(siteOutput, 'articles')
+        },
+        templates: templatesOutput
     };
 };
 

@@ -767,6 +767,11 @@
   resolved "https://registry.yarnpkg.com/@labset-eslint/eslint-plugin/-/eslint-plugin-1.3.0.tgz#25237e47ebc5c2ecfeab294457b80d4345dacf01"
   integrity sha512-uB3zhuVPVwFkJTuQKQPcyI9VZnfPtJdjB4QoOXzEENWgCWbN7js/jsZ2GOuSxH5tkR+PrCagjX9A3RudiQFzuQ==
 
+"@labset/fs-directory@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@labset/fs-directory/-/fs-directory-1.1.0.tgz#1b103082b1f3bb0aa5438e10057c32e9e751c765"
+  integrity sha512-ye9fFKrtTjhYw8yWMUQdTRfi/jKX4rMcVemGnMuIkcuVKExqu64nZzNrEfMCxIENwWfT+zi0K2vw62fE+7XkeQ==
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"

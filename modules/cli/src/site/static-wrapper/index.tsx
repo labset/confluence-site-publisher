@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { confluenceApi } from '../../confluence-api';
-import { Store } from '../../store';
+import React from "react";
 
-import { extractPageTree } from './extract-page-tree';
+import { Content } from "../../confluence-api/types";
 
-interface ExtractSpaceProps {
-    spaceKey: string;
-    store: Store;
+interface StaticWrapperProps {
+  content: Content;
 }
 
-const extractSpace = async ({ spaceKey, store }: ExtractSpaceProps) => {
-    console.info(`🪐 extract-space:`, spaceKey);
-    const homepageIdentifier =
-        await confluenceApi.getSpaceHomepageIdentifier(spaceKey);
-    await extractPageTree({
-        identifier: homepageIdentifier,
-        store,
-        asHomePage: true
-    });
+const StaticWrapper = ({ content }: StaticWrapperProps) => {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{content.identifier.title}</title>
+      </head>
+      <body>
+        <div id="root" />
+      </body>
+    </html>
+  );
 };
 
-export { extractSpace };
+export { StaticWrapper };

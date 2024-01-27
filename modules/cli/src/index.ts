@@ -17,6 +17,7 @@ import * as path from 'path';
 
 import { Command } from 'commander';
 
+import { webpackBuild } from './commands/build/webpack-build';
 import { extractSpace } from './commands/extract';
 import { initStore } from './store';
 
@@ -29,6 +30,15 @@ program
         const destination = path.resolve(process.cwd(), 'output');
         const store = initStore({ spaceKey, destination });
         await extractSpace({ spaceKey, store });
+    });
+
+program
+    .command('build <spaceKey>')
+    .description('builds the site resources for a given confluence space')
+    .option('--serve', 'with dev server running', false)
+    .option('--open', 'with open browser session in dev server', false)
+    .action(async (spaceKey: string, options) => {
+        await webpackBuild({ ...options, spaceKey });
     });
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

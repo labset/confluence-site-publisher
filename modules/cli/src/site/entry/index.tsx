@@ -37,7 +37,7 @@ const Site = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SiteLayout topNav={topNav}>hello</SiteLayout>
+      <SiteLayout topNav={topNav}>hello world</SiteLayout>
     </ThemeProvider>
   );
 };

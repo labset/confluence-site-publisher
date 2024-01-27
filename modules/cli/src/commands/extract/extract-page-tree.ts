@@ -21,14 +21,19 @@ import { extractContent } from './extract-content';
 
 interface ExtractPageTreeProps {
     identifier: Identifier;
+    asHomePage: boolean;
     store: Store;
 }
 
-const extractPageTree = async ({ identifier, store }: ExtractPageTreeProps) => {
+const extractPageTree = async ({
+    identifier,
+    store,
+    asHomePage
+}: ExtractPageTreeProps) => {
     const content = await confluenceApi.getContentById(identifier.id);
-    await extractContent({ content, store });
+    await extractContent({ content, store, asHomePage });
     for (const child of content.children) {
-        await extractPageTree({ identifier: child, store });
+        await extractPageTree({ identifier: child, store, asHomePage: false });
     }
 };
 
