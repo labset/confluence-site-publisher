@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Content } from "@labset/confsite-api";
+import React from "react";
 
-interface Identifier {
-    id: string;
-    title: string;
+interface AtlaskitContentRendererProps {
+  content: Content;
 }
 
-interface Content {
-    identifier: Identifier;
-    type: 'page' | 'blogpost';
-    children: Identifier[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    body: any;
-}
+const AtlaskitContentRenderer = ({ content }: AtlaskitContentRendererProps) => {
+  return <pre>{content.identifier.title}</pre>;
+};
 
-export type { Identifier, Content };
+export { AtlaskitContentRenderer };

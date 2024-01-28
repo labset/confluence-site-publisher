@@ -87,10 +87,11 @@ class ConfluenceApiClient implements ConfluenceApi {
             .get<ContentById>(`/wiki/rest/api/search?${query.toString()}`)
             .catch(axiosErrorHandler);
         const item = data.results[0];
-        const { id, title, type, children } = item.content;
+        const { id, title, type, body, children } = item.content;
         return {
             identifier: { id, title },
             type,
+            body: JSON.parse(body.atlas_doc_format.value),
             children:
                 children.page?.results.map((child) => ({
                     id: child.id,

@@ -18,6 +18,8 @@ import { LinearProgress, Box, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+import { AtlaskitContentRenderer } from "../atlaskit-content-renderer";
+
 const SiteContent = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [content, setContent] = useState<Content | undefined>();
@@ -42,6 +44,7 @@ const SiteContent = () => {
       {!loading && content && (
         <Box>
           <Typography variant="h3">{content.identifier.title}</Typography>
+          <AtlaskitContentRenderer content={content} />
         </Box>
       )}
     </>
