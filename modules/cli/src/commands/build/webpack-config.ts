@@ -17,7 +17,7 @@ import * as path from 'path';
 
 import { listFiles } from '@labset/fs-directory';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 
 interface WebpackConfigProps {
     spaceKey: string;
@@ -44,7 +44,12 @@ const webpackConfig = ({
             filename
         });
     });
-    const plugins = [...htmlPlugins];
+    const definePlugin = new DefinePlugin({
+        process: {
+            env: {}
+        }
+    });
+    const plugins = [...htmlPlugins, definePlugin];
 
     const siteEntry = isDev
         ? path.resolve(siteSources, 'index.tsx')
@@ -56,7 +61,12 @@ const webpackConfig = ({
             site: siteEntry
         },
         resolve: {
-            extensions: ['.tsx', '.ts', '.js']
+            extensions: ['.tsx', '.ts', '.js'],
+            fallback: {
+                buffer: require.resolve('buffer/'),
+                crypto: require.resolve('crypto-browserify'),
+                stream: require.resolve('stream-browserify')
+            }
         },
         module: {
             rules: [

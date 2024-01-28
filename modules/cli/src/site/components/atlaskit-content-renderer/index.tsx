@@ -13,15 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ReactRenderer } from "@atlaskit/renderer";
+import { Provider } from "@atlaskit/smart-card";
 import { Content } from "@labset/confsite-api";
 import React from "react";
+
+import { SimpleCardClient } from "./simple-card-client";
 
 interface AtlaskitContentRendererProps {
   content: Content;
 }
 
 const AtlaskitContentRenderer = ({ content }: AtlaskitContentRendererProps) => {
-  return <pre>{content.identifier.title}</pre>;
+  return (
+    <Provider client={new SimpleCardClient()}>
+      <ReactRenderer document={content.body} />;
+    </Provider>
+  );
 };
 
 export { AtlaskitContentRenderer };

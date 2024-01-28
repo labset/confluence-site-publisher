@@ -15,7 +15,8 @@
     "test:watch": "jest --watchAll",
     "format:check": "prettier --check .",
     "format": "prettier --check --write .",
-    "lint": "eslint modules/ --ext .ts,.tsx,.js"
+    "lint": "eslint modules/ --ext .ts,.tsx,.js",
+    "start": "./clidev build TECHVIQUEEN --serve"
   },
   "devDependencies": {
     "@labset-eslint/eslint-plugin": "^1.3.0",

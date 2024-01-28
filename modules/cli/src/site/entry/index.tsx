@@ -30,9 +30,9 @@ const Site = () => {
   const theme = useMemo(
     () =>
       createTheme({
-        palette: { mode: "dark" },
+        palette: { mode: "light" },
       }),
-    [],
+    []
   );
 
   return (

@@ -22,6 +22,8 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticWrapper } from '../../site/static-wrapper';
 import { Store } from '../../store';
 
+import { scrubContent } from './adf-processor';
+
 interface ExtractContentProps {
     content: Content;
     store: Store;
@@ -38,6 +40,24 @@ const resolveContentPath = ({
     }
     const root = content.type === 'page' ? store.site.pages : store.site.blogs;
     return path.resolve(root, content.identifier.id);
+};
+
+const saveContentData = async ({
+    content,
+    store,
+    asHomePage
+}: ExtractContentProps) => {
+    const scrubbed = scrubContent(content.body);
+    const data: Content = {
+        ...content,
+        body: scrubbed
+    };
+    const contentPath = resolveContentPath({ content, store, asHomePage });
+    fs.mkdirSync(contentPath, { recursive: true });
+    fs.writeFileSync(
+        path.resolve(contentPath, 'data.json'),
+        JSON.stringify(data)
+    );
 };
 
 const saveContentHtml = async ({
@@ -65,13 +85,7 @@ const extractContent = async ({
     asHomePage
 }: ExtractContentProps) => {
     console.info(`📝 process content:`, content.identifier);
-    const contentPath = resolveContentPath({ content, store, asHomePage });
-    fs.mkdirSync(contentPath, { recursive: true });
-    fs.writeFileSync(
-        path.resolve(contentPath, 'data.json'),
-        JSON.stringify(content)
-    );
-
+    await saveContentData({ content, store, asHomePage });
     await saveContentHtml({ content, store, asHomePage });
 };
 
