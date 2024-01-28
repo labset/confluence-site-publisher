@@ -19,6 +19,9 @@ interface Config {
     CONFLUENCE_SITE_NAME: string;
     CONFLUENCE_USERNAME: string;
     CONFLUENCE_API_TOKEN: string;
+    CONFLUENCE_CLOUD_TOKEN: string;
+
+    TARGET_SITE: string;
 }
 
 const parsedConfig: unknown = dotenv.config().parsed ?? {};

@@ -27,7 +27,7 @@ class SimpleCardClient extends Client {
       .update(url)
       .digest("hex")
       .toString();
-    const { data } = await axios.get(`/object-resolver/${cardHash}.json`);
+    const { data } = await axios.get(`/objects/${cardHash}.json`);
     return {
       meta: {
         access: "granted",

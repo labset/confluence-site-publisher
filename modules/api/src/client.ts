@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { config } from '@labset/confsite-cli/dist/config';
 import type { AxiosInstance } from 'axios';
 import axios, { AxiosError } from 'axios';
 
 import { ContentById, SpaceWithHomePage } from './external';
-import { Content, Identifier } from './types';
+import {
+    Content,
+    Identifier,
+    ResourceDefinition,
+    ResourceObject
+} from './types';
 
 interface ConfluenceApi {
     getSpaceHomepageIdentifier: (input: {
         spaceKey: string;
     }) => Promise<Identifier>;
     getContentById: (input: { contentId: string }) => Promise<Content>;
+    getObjects: (input: {
+        resourceObjects: Array<ResourceObject>;
+    }) => Promise<Array<{ body: { data: ResourceDefinition } }>>;
 }
 
 interface ConfluenceApiClientProps {
@@ -98,6 +107,27 @@ class ConfluenceApiClient implements ConfluenceApi {
                     title: child.title
                 })) ?? []
         };
+    }
+
+    async getObjects({
+        resourceObjects
+    }: {
+        resourceObjects: ResourceObject[];
+    }): Promise<{ body: { data: ResourceDefinition } }[]> {
+        const { data } = await this.client
+            .post(
+                '/gateway/api/object-resolver/resolve/batch',
+                resourceObjects,
+                {
+                    headers: {
+                        'sec-fetch-mode': 'cors',
+                        'sec-fetch-site': 'same-origin',
+                        cookie: `tenant.session.token=${config.CONFLUENCE_CLOUD_TOKEN}`
+                    }
+                }
+            )
+            .catch(axiosErrorHandler);
+        return data;
     }
 }
 

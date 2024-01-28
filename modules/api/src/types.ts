@@ -22,9 +22,21 @@ interface Identifier {
 interface Content {
     identifier: Identifier;
     type: 'page' | 'blogpost';
+    emoji?: string;
     children: Identifier[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any;
 }
 
-export type { Identifier, Content };
+interface ResourceObject {
+    resourceUrl: string;
+}
+
+interface ResourceDefinition {
+    url: string;
+    generator: { icon: { url: string } };
+    name: string;
+    '@type': string;
+}
+
+export type { Identifier, Content, ResourceObject, ResourceDefinition };

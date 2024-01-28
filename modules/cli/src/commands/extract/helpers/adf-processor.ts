@@ -16,8 +16,20 @@
 import { scrubAdf } from '@atlaskit/adf-utils/scrub';
 import type { ADFEntity } from '@atlaskit/adf-utils/types';
 
+import { rewriteUrl } from './rewrite-url';
+
 const identityProcessor = (node: ADFEntity) => {
     return node;
+};
+
+const inlineCardProcessor = (node: ADFEntity) => {
+    const url = rewriteUrl(node.attrs?.url);
+    return {
+        type: node.type,
+        attrs: {
+            url
+        }
+    };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +43,7 @@ const scrubContent = (doc: any) => {
             expand: identityProcessor,
             extension: identityProcessor,
             heading: identityProcessor,
+            inlineCard: inlineCardProcessor,
             inlineExtension: identityProcessor,
             media: identityProcessor,
             panel: identityProcessor,

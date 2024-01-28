@@ -22,7 +22,9 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticWrapper } from '../../site/static-wrapper';
 import { Store } from '../../store';
 
-import { scrubContent } from './adf-processor';
+import { extractAssets } from './extract-assets';
+import { extractObjects } from './extract-objects';
+import { scrubContent } from './helpers/adf-processor';
 
 interface ExtractContentProps {
     content: Content;
@@ -85,6 +87,8 @@ const extractContent = async ({
     asHomePage
 }: ExtractContentProps) => {
     console.info(`📝 process content:`, content.identifier);
+    await extractObjects({ content, store });
+    await extractAssets({ content, store });
     await saveContentData({ content, store, asHomePage });
     await saveContentHtml({ content, store, asHomePage });
 };

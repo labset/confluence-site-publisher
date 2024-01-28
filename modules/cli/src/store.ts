@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import fs from 'fs';
 import * as path from 'path';
 
 interface Store {
@@ -20,9 +21,18 @@ interface Store {
         home: string;
         pages: string;
         blogs: string;
+        objects: string;
+        assets: { avatars: string; emojis: string };
     };
     templates: string;
 }
+
+const makeStoreDirectories = (data: object) => {
+    for (const dir of Object.values(data)) {
+        if (typeof dir === 'string') fs.mkdirSync(dir, { recursive: true });
+        else makeStoreDirectories(dir);
+    }
+};
 
 const initStore = ({
     spaceKey,
@@ -33,14 +43,21 @@ const initStore = ({
 }): Store => {
     const siteOutput = path.resolve(destination, 'site', spaceKey);
     const templatesOutput = path.resolve(destination, 'templates', spaceKey);
-    return {
+    const store = {
         site: {
             home: siteOutput,
             pages: path.resolve(siteOutput, 'notes'),
-            blogs: path.resolve(siteOutput, 'articles')
+            blogs: path.resolve(siteOutput, 'articles'),
+            objects: path.resolve(siteOutput, 'objects'),
+            assets: {
+                avatars: path.resolve(siteOutput, 'assets', 'avatars'),
+                emojis: path.resolve(siteOutput, 'assets', 'emojis')
+            }
         },
         templates: templatesOutput
     };
+    makeStoreDirectories(store);
+    return store;
 };
 
 export { initStore };

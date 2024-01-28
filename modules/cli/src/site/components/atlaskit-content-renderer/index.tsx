@@ -18,6 +18,7 @@ import { Provider } from "@atlaskit/smart-card";
 import { Content } from "@labset/confsite-api";
 import React from "react";
 
+import { dataProviders } from "./data-providers";
 import { SimpleCardClient } from "./simple-card-client";
 
 interface AtlaskitContentRendererProps {
@@ -27,7 +28,7 @@ interface AtlaskitContentRendererProps {
 const AtlaskitContentRenderer = ({ content }: AtlaskitContentRendererProps) => {
   return (
     <Provider client={new SimpleCardClient()}>
-      <ReactRenderer document={content.body} />;
+      <ReactRenderer document={content.body} dataProviders={dataProviders()} />;
     </Provider>
   );
 };
