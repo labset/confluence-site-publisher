@@ -13,58 +13,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import axios, { AxiosError } from 'axios';
 
-import { config } from '../config';
-
-import { axiosErrorHandler } from './helpers';
+import { ContentById, SpaceWithHomePage } from './external';
 import { Content, Identifier } from './types';
 
 interface ConfluenceApi {
-    getSpaceHomepageIdentifier: (spaceKey: string) => Promise<Identifier>;
-    getSpaceBlogPosts: (spaceKey: string) => Promise<Content[]>;
-    getContentById: (contentId: string) => Promise<Content>;
+    getSpaceHomepageIdentifier: (input: {
+        spaceKey: string;
+    }) => Promise<Identifier>;
+    getContentById: (input: { contentId: string }) => Promise<Content>;
 }
+
+interface ConfluenceApiClientProps {
+    hostname: string;
+    username: string;
+    token: string;
+}
+
+const axiosErrorHandler = (error: AxiosError) => {
+    const { data, status, statusText } = error.response || {};
+    console.error('failed request', { data, status, statusText });
+    throw Error('failed request');
+};
 
 class ConfluenceApiClient implements ConfluenceApi {
     private readonly client: AxiosInstance;
 
-    constructor() {
+    constructor({ hostname, username, token }: ConfluenceApiClientProps) {
         this.client = axios.create({
-            baseURL: `https://${config.CONFLUENCE_SITE_NAME}`,
+            baseURL: `https://${hostname}`,
             auth: {
-                username: config.CONFLUENCE_USERNAME,
-                password: config.CONFLUENCE_API_TOKEN
+                username,
+                password: token
             }
         });
     }
 
-    async getSpaceHomepageIdentifier(spaceKey: string): Promise<Identifier> {
+    async getSpaceHomepageIdentifier({
+        spaceKey
+    }: {
+        spaceKey: string;
+    }): Promise<Identifier> {
         const { data } = await this.client
-            .get(`/wiki/rest/api/space/${spaceKey}?expand=homepage`)
+            .get<SpaceWithHomePage>(
+                `/wiki/rest/api/space/${spaceKey}?expand=homepage`
+            )
             .catch(axiosErrorHandler);
         const { id, title } = data.homepage;
         return { id, title };
     }
 
-    async getSpaceBlogPosts(spaceKey: string): Promise<Content[]> {
-        const query = new URLSearchParams({
-            cql: `space=${spaceKey} and type=blogpost order by created desc`,
-            expand: 'content.history,content.metadata.labels,content.children.attachment.metadata.labels'
-        });
-        const { data } = await this.client
-            .get(`/wiki/rest/api/search?${query.toString()}`)
-            .catch(axiosErrorHandler);
-        const { results } = data;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return results.map((item: any) => {
-            const { id, title } = item.content;
-            return { id, title };
-        });
-    }
-
-    async getContentById(contentId: string): Promise<Content> {
+    async getContentById({
+        contentId
+    }: {
+        contentId: string;
+    }): Promise<Content> {
         const contentExpansions = [
             'content.body.atlas_doc_format',
             'content.children.page.metadata.properties.emoji_title_published',
@@ -79,7 +84,7 @@ class ConfluenceApiClient implements ConfluenceApi {
             expand: contentExpansions.join(',')
         });
         const { data } = await this.client
-            .get(`/wiki/rest/api/search?${query.toString()}`)
+            .get<ContentById>(`/wiki/rest/api/search?${query.toString()}`)
             .catch(axiosErrorHandler);
         const item = data.results[0];
         const { id, title, type, children } = item.content;
@@ -87,8 +92,7 @@ class ConfluenceApiClient implements ConfluenceApi {
             identifier: { id, title },
             type,
             children:
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                children.page?.results.map((child: any) => ({
+                children.page?.results.map((child) => ({
                     id: child.id,
                     title: child.title
                 })) ?? []
@@ -96,6 +100,5 @@ class ConfluenceApiClient implements ConfluenceApi {
     }
 }
 
-const confluenceApi = new ConfluenceApiClient();
-export { confluenceApi };
 export type { ConfluenceApi };
+export { ConfluenceApiClient };

@@ -16,9 +16,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { Content } from '@labset/confsite-api';
 import ReactDOMServer from 'react-dom/server';
 
-import { Content } from '../../confluence-api/types';
 import { StaticWrapper } from '../../site/static-wrapper';
 import { Store } from '../../store';
 

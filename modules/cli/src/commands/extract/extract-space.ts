@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { confluenceApi } from '../../confluence-api';
+import { api } from '../../api';
 import { Store } from '../../store';
 
 import { extractPageTree } from './extract-page-tree';
@@ -25,8 +25,9 @@ interface ExtractSpaceProps {
 
 const extractSpace = async ({ spaceKey, store }: ExtractSpaceProps) => {
     console.info(`🪐 extract-space:`, spaceKey);
-    const homepageIdentifier =
-        await confluenceApi.getSpaceHomepageIdentifier(spaceKey);
+    const homepageIdentifier = await api.getSpaceHomepageIdentifier({
+        spaceKey
+    });
     await extractPageTree({
         identifier: homepageIdentifier,
         store,

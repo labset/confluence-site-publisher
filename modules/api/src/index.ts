@@ -13,26 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Content } from "@labset/confsite-api";
-import React from "react";
-
-interface StaticWrapperProps {
-  content: Content;
-}
-
-const StaticWrapper = ({ content }: StaticWrapperProps) => {
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{content.identifier.title}</title>
-      </head>
-      <body>
-        <div id="root" />
-      </body>
-    </html>
-  );
-};
-
-export { StaticWrapper };
+export * from './types';
+export * from './client';

@@ -18,10 +18,12 @@ import * as path from 'path';
 import { listFiles } from '@labset/fs-directory';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Configuration } from 'webpack';
+
 interface WebpackConfigProps {
     spaceKey: string;
 }
 
+// noinspection JSUnresolvedReference
 const isDev = process.env.NODE_ENV === 'development';
 
 const webpackConfig = ({

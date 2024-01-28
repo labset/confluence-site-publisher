@@ -1,0 +1,16 @@
+{
+  "name": "@labset/confsite-api",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "format:check": "prettier --check .",
+    "format": "prettier --check --write .",
+    "lint": "eslint src/ --ext .ts,.tsx,.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7"
+  }
+}

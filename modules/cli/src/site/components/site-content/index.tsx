@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Content } from "@labset/confsite-api";
 import { LinearProgress, Box, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
-import { Content } from "../../../confluence-api/types";
 
 const SiteContent = () => {
   const [loading, setLoading] = useState<boolean>(true);

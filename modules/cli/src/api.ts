@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Content } from "@labset/confsite-api";
-import React from "react";
+import { ConfluenceApiClient } from '@labset/confsite-api';
 
-interface StaticWrapperProps {
-  content: Content;
-}
+import { config } from './config';
 
-const StaticWrapper = ({ content }: StaticWrapperProps) => {
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{content.identifier.title}</title>
-      </head>
-      <body>
-        <div id="root" />
-      </body>
-    </html>
-  );
-};
+const api = new ConfluenceApiClient({
+    hostname: config.CONFLUENCE_SITE_NAME,
+    username: config.CONFLUENCE_USERNAME,
+    token: config.CONFLUENCE_API_TOKEN
+});
 
-export { StaticWrapper };
+export { api };

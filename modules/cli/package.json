@@ -13,8 +13,19 @@
     "lint": "eslint src/ --ext .ts,.tsx,.js"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@labset/fs-directory": "^1.1.0",
+    "@mui/icons-material": "^5.15.6",
+    "@mui/material": "^5.15.6",
     "axios": "^1.6.5",
     "commander": "^11.1.0",
-    "dotenv": "^16.3.2"
+    "dotenv": "^16.3.2",
+    "html-webpack-plugin": "^5.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.90.0",
+    "webpack-dev-server": "^4.15.1"
   }
 }

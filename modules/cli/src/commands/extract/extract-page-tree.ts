@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { confluenceApi } from '../../confluence-api';
-import { Identifier } from '../../confluence-api/types';
+import { Identifier } from '@labset/confsite-api';
+
+import { api } from '../../api';
 import { Store } from '../../store';
 
 import { extractContent } from './extract-content';
@@ -30,7 +31,7 @@ const extractPageTree = async ({
     store,
     asHomePage
 }: ExtractPageTreeProps) => {
-    const content = await confluenceApi.getContentById(identifier.id);
+    const content = await api.getContentById({ contentId: identifier.id });
     await extractContent({ content, store, asHomePage });
     for (const child of content.children) {
         await extractPageTree({ identifier: child, store, asHomePage: false });
